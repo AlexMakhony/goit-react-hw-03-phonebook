@@ -18,6 +18,22 @@ export class App extends Component {
     filter: '',
   };
 
+  // 1е делаем Дид Маунт чтобы прорисовка нашей книги брала данные из локала и кидала в стейт если они есть
+  componentDidMount() {
+    const savedContacts = localStorage.getItem('contacts');
+    if (savedContacts !== null) {
+      this.setState({
+        contacts: JSON.parse(savedContacts),
+      })
+    } 
+}
+  // 2е делаем Дид Апдейт что новый контакты улетали в локалку
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts))
+    }
+  }
+
   addContact = newContact => {
   const { contacts } = this.state;
   const isContactExists = contacts.some(
